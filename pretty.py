@@ -130,7 +130,7 @@ pretty.set_formater(OrderedDict, format_OrderedDict)
 
 
 def pprint(*args, **kwargs): print(pretty(*args, **kwargs))
-
+def info(obj, magic_methods=True): return {_:getattr(obj, _) for _ in dir(obj) if (not _.startswith('__') if not magic_methods else True)}
 
 if __name__=='__main__':
     testdict = {'list':['a','b',1,2,['a','b',1,2]],'dict':{'a':1,2:'b','dict':{'a':1,2:'b'}},'tuple':('a','b',1,2,('a','b',1,2)),'function':pretty,'unicode':u'\xa7',('tuple','key'):'valid'}
