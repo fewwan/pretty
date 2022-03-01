@@ -19,6 +19,7 @@ class Formatter(object):
         self.set_formater(dict, self.__class__.format_dict)
         self.set_formater(list, self.__class__.format_list)
         self.set_formater(tuple, self.__class__.format_tuple)
+        self.set_formater(set, self.__class__.format_set)
 
     def __call__(self, *args:Tuple[object, ...], indent=None, deep=None, compact=None, **kargs:dict) -> str:
         if indent: self.indent = indent
@@ -72,7 +73,13 @@ class Formatter(object):
         ]
         return '(%s)' % (','.join(items) + self.nlch + self.inch * (indent - self._indent) if indent//self._indent <= self.deep else ', '.join(items))
 
-
+    def format_set(self, value:set, indent:int) -> str:
+        items = [
+            self.nlch + self.inch * indent + self.format(item, indent + self._indent) if indent//self._indent <= self.deep else repr(item)
+            for item in value
+        ]
+        return '{%s}' % (','.join(items) + self.nlch + self.inch * (indent - self._indent) if indent//self._indent <= self.deep else ', '.join(items))
+    
 pretty = Formatter()
 
 from collections import deque, ChainMap, Counter, OrderedDict
