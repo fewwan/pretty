@@ -3,7 +3,7 @@
 from typing import *
 from math import inf
 
-__all__ = ['pretty', 'Formatter', 'pprint']
+__all__ = ['pretty', 'Formatter', 'pprint', 'info']
 
 class Formatter(object):
     def __init__(self) -> NoReturn:
@@ -20,6 +20,7 @@ class Formatter(object):
         self.set_formater(list, self.__class__.format_list)
         self.set_formater(tuple, self.__class__.format_tuple)
         self.set_formater(set, self.__class__.format_set)
+        self.set_formater(frozenset, self.__class__.format_frozenset)
 
     def __call__(self, *args:Tuple[object, ...], indent=None, deep=None, compact=None, **kargs:dict) -> str:
         if indent: self.indent = indent
@@ -79,6 +80,13 @@ class Formatter(object):
             for item in value
         ]
         return '{%s}' % (','.join(items) + self.nlch + self.inch * (indent - self._indent) if indent//self._indent <= self.deep else ', '.join(items))
+    
+    def format_frozenset(self, value:frozenset, indent:int) -> str:
+        items = [
+            self.nlch + self.inch * indent + self.format(item, indent + self._indent) if indent//self._indent <= self.deep else repr(item)
+            for item in value
+        ]
+        return 'frozenset({%s})' % (','.join(items) + self.nlch + self.inch * (indent - self._indent) if indent//self._indent <= self.deep else ', '.join(items))
     
 pretty = Formatter()
 
