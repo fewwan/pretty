@@ -1,2 +1,2 @@
-from .pretty import pretty, pprint, Formatter
-__all__ = ['pretty', 'pprint', 'Formatter']
+from .pretty import pretty, pprint, info, Formatter
+__all__ = ['pretty', 'pprint', 'Formatter', 'info']
